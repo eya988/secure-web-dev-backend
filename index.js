@@ -7,17 +7,19 @@ const bodyParser = require("body-parser");
 require("./src/authentication/local.strategy");
 require("./src/authentication/jwt.strategy");
 const passport = require("passport");
+const cors = require("cors");
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
+app.use(cors("*"));
 
 // Protect all /locations route with JWT Authentication
 app.use(
-  "/locations",
-  passport.authenticate("jwt", { session: false }),
-  locationsController
+    "/locations",
+    passport.authenticate("jwt", { session: false }),
+    locationsController
 );
 app.use("/users", usersController);
 
@@ -28,7 +30,7 @@ async function main() {
   console.log("Connected to Mongo Database");
   app.listen(port, () => {
     console.log(
-      `API listening on port ${port}, visit http://localhost:${port}/`
+        `API listening on port ${port}, visit http://localhost:${port}/`
     );
   });
 }
